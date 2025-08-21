@@ -2,8 +2,14 @@ package core;
 
 import parsers.IParser;
 import parsers.JSParser;
+import parsers.CSharpParser;
+import parsers.JavaParser;
+import parsers.GoParser;
 import emitters.IEmitter;
 import emitters.PythonEmitter;
+import emitters.CSharpEmitter;
+import emitters.JavaEmitter;
+import emitters.GoEmitter;
 
 /**
  * Global registry for parser and emitter implementations.
@@ -21,6 +27,15 @@ class Registry {
     initialized = true;
     registerParser(Language.JavaScript, new JSParser());
     registerEmitter(Language.Python, new PythonEmitter());
+
+    registerParser(Language.CSharp, new CSharpParser());
+    registerEmitter(Language.CSharp, new CSharpEmitter());
+
+    registerParser(Language.Java, new JavaParser());
+    registerEmitter(Language.Java, new JavaEmitter());
+
+    registerParser(Language.Go, new GoParser());
+    registerEmitter(Language.Go, new GoEmitter());
   }
 
   public static function registerParser(lang:Language, parser:IParser):Void {
