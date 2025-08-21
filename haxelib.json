@@ -5,7 +5,7 @@
   "description": "Convertisseur de code multi-langages via un AST pivot (UniAST), CLI + GUI OpenFL/HaxeUI.",
   "version": "0.1.0",
   "classPath": "src",
-  "contributors": ["you"],
+  "contributors": ["OpenAI-Assistant"],
   "dependencies": {
     "hxcpp": "",
     "openfl": "",
