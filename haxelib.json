@@ -1,0 +1,10 @@
+{
+  "name": "HaxeCodeConvert",
+  "license": "MIT",
+  "tags": ["code", "convert", "ast"],
+  "description": "Simplified demo code converter with pivot AST.",
+  "version": "0.0.1",
+  "classPath": "src",
+  "contributors": ["OpenAI-Assistant"],
+  "dependencies": {}
+}
