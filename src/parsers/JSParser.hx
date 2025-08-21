@@ -51,6 +51,10 @@ class JSParser implements IParser {
       case "string":
         var t = node.text;
         StringLiteral(t.substr(1, t.length - 2));
+      case "identifier":
+        Identifier(node.text);
+      case "number":
+        NumberLiteral(node.text);
       default:
         StringLiteral(node.text);
     }

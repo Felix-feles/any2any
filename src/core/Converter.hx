@@ -1,7 +1,6 @@
 package core;
 
 import ai.IAgent;
-import StringTools;
 import core.Registry;
 import core.Segmenter;
 
@@ -26,10 +25,12 @@ class Converter {
     for (chunk in Segmenter.chunk(code)) {
       var piece:String;
       if (parser != null && emitter != null) {
-        var ast = parser.parse(chunk);
-        piece = emitter.emit(ast);
-      } else if (src == Language.JavaScript && to == Language.Python) {
-        piece = jsToPython(chunk);
+        try {
+          var ast = parser.parse(chunk);
+          piece = emitter.emit(ast);
+        } catch (e:Dynamic) {
+          piece = agent.convertChunk(chunk, cast src, cast to);
+        }
       } else {
         piece = agent.convertChunk(chunk, cast src, cast to);
       }
@@ -46,18 +47,4 @@ class Converter {
     return Language.Auto;
   }
 
-  function jsToPython(code:String):String {
-    var lines = code.split("\n");
-    var out:Array<String> = [];
-    for (line in lines) {
-      var l = StringTools.replace(line, "console.log", "print");
-      l = ~/;\s*$/.replace(l, "");
-      if (~/function\s+([a-zA-Z0-9_]+)\(([^)]*)\)\s*{/.match(l)) {
-        l = ~/function\s+([a-zA-Z0-9_]+)\(([^)]*)\)\s*{/.replace(l, "def $1($2):");
-      }
-      if (l.indexOf("}") >= 0) continue;
-      out.push(l);
-    }
-    return out.join("\n");
-  }
 }
