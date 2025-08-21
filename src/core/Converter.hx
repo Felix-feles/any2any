@@ -14,6 +14,21 @@ class Converter {
   public function convert(code:String, from:Language, to:Language):String {
     var src = from == Language.Auto ? detectLanguage(code) : from;
     if (src == to) return code;
+    var parser = Registry.getParser(src);
+    var emitter = Registry.getEmitter(to);
+    var buf = new StringBuf();
+    for (chunk in Segmenter.chunk(code)) {
+      if (parser != null && emitter != null) {
+        var ast = parser.parse(chunk);
+        buf.add(emitter.emit(ast));
+      } else if (src == Language.JavaScript && to == Language.Python) {
+        buf.add(jsToPython(chunk));
+      } else {
+        buf.add(agent.convertChunk(chunk, cast src, cast to));
+      }
+      buf.add("\n");
+    }
+    return buf.toString();
 
     Registry.initDefaults();
     var parser = Registry.getParser(src);
