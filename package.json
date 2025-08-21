@@ -4,7 +4,7 @@
   "description": "any2any is a progressive code converter written in Haxe. It reads source code, maps it to a tiny universal AST (UniAST) and emits code for another language. The project ships with a command-line tool and an experimental OpenFL/HaxeUI interface.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "haxe test.hxml && node bin/test.js"
   },
   "keywords": [],
   "author": "",
