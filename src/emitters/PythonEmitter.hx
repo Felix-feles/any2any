@@ -34,6 +34,8 @@ class PythonEmitter implements IEmitter {
   function emitExpr(e:UniAstExpr):String {
     return switch (e) {
       case StringLiteral(v): '"' + v + '"';
+      case Identifier(name): name;
+      case NumberLiteral(v): v;
       case CallExpr(name, args):
         var pyName = (name == "console.log") ? "print" : name;
         pyName + "(" + args.map(emitExpr).join(", ") + ")";

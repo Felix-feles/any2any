@@ -35,6 +35,10 @@ enum UniAstInstruction {
 enum UniAstExpr {
   /** String literal value. */
   StringLiteral(value:String);
+  /** Identifier usage. */
+  Identifier(name:String);
+  /** Numeric literal value. */
+  NumberLiteral(value:String);
   /** Function call with a name and arguments. */
   CallExpr(name:String, args:Array<UniAstExpr>);
 }
