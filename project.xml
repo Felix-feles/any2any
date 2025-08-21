@@ -1,6 +1,6 @@
 <project>
-  <meta title="Haxe CodeConvert" package="com.example.codeconvert" version="0.1.0" company="you"/>
-  <app main="gui.Main" file="HaxeCodeConvert" path="bin" />
+  <meta title="any2any" package="com.example.any2any" version="0.1.0" company="you"/>
+  <app main="gui.Main" file="any2any" path="bin" />
   <source path="src" />
   <haxelib name="openfl" />
   <haxelib name="haxeui-core" />

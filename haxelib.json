@@ -1,5 +1,5 @@
 {
-  "name": "HaxeCodeConvert",
+  "name": "any2any",
   "license": "MIT",
   "tags": ["code", "convert", "ast", "ai", "haxe"],
   "description": "Multi-language code converter using a universal AST (UniAST).",
