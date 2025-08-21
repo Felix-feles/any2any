@@ -26,10 +26,10 @@ class Main extends Sprite {
     root.percentWidth = 100;
     root.percentHeight = 100;
     root.padding = 10;
-    root.gap = 8;
+    root.spacing = 8;
 
     var top = new HBox();
-    top.gap = 10;
+    top.spacing = 10;
 
     fromSel = new DropDown();
     fromSel.dataSource = langData();
@@ -58,9 +58,13 @@ class Main extends Sprite {
       statusLbl.text = "";
     };
 
-    top.addComponent(new Label("From:"));
+    var fromLbl = new Label();
+    fromLbl.text = "From:";
+    top.addComponent(fromLbl);
     top.addComponent(fromSel);
-    top.addComponent(new Label("To:"));
+    var toLbl = new Label();
+    toLbl.text = "To:";
+    top.addComponent(toLbl);
     top.addComponent(toSel);
     top.addComponent(convertBtn);
     top.addComponent(swapBtn);
@@ -74,7 +78,7 @@ class Main extends Sprite {
     outputArea = new TextArea();
     outputArea.percentWidth = 100;
     outputArea.percentHeight = 45;
-    outputArea.readonly = true;
+    outputArea.readOnly = true;
 
     root.addComponent(top);
     root.addComponent(inputArea);
