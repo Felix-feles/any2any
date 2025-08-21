@@ -2,6 +2,8 @@ package core;
 
 import ai.IAgent;
 import StringTools;
+import core.Registry;
+import core.Segmenter;
 
 class Converter {
   var agent:IAgent;
@@ -27,6 +29,27 @@ class Converter {
       buf.add("\n");
     }
     return buf.toString();
+
+    Registry.initDefaults();
+    var parser = Registry.getParser(src);
+    var emitter = Registry.getEmitter(to);
+    if (parser != null && emitter != null) {
+      try {
+        var segments = Segmenter.split(code);
+        var buf = new StringBuf();
+        for (seg in segments) {
+          var ast = parser.parseSegment(seg.text);
+          buf.add(emitter.emit(ast));
+        }
+        return buf.toString();
+      } catch (e:Dynamic) {}
+    }
+
+    if (src == Language.JavaScript && to == Language.Python) {
+      return jsToPython(code);
+    }
+
+    return agent.convertChunk(code, cast src, cast to);
   }
 
   function detectLanguage(code:String):Language {

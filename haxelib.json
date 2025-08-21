@@ -3,6 +3,7 @@
   "license": "MIT",
   "tags": ["code", "convert", "ast", "ai", "haxe"],
   "description": "Convertisseur de code multi-langages via un AST pivot (UniAST), CLI + GUI OpenFL/HaxeUI.",
+  "description": "Convertisseur de code multi-langages via un AST pivot (UniAST)…",
   "version": "0.1.0",
   "classPath": "src",
   "contributors": ["OpenAI-Assistant"],
