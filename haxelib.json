@@ -1,10 +1,15 @@
 {
   "name": "HaxeCodeConvert",
   "license": "MIT",
-  "tags": ["code", "convert", "ast"],
-  "description": "Simplified demo code converter with pivot AST.",
-  "version": "0.0.1",
+  "tags": ["code", "convert", "ast", "ai", "haxe"],
+  "description": "Convertisseur de code multi-langages via un AST pivot (UniAST)…",
+  "version": "0.1.0",
   "classPath": "src",
   "contributors": ["OpenAI-Assistant"],
-  "dependencies": {}
+  "dependencies": {
+    "hxcpp": "",
+    "openfl": "",
+    "haxeui-core": "",
+    "haxeui-openfl": ""
+  }
 }
