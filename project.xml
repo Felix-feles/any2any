@@ -1,0 +1,11 @@
+<project>
+  <meta title="Haxe CodeConvert" package="com.example.codeconvert" version="0.1.0" company="you"/>
+  <app main="gui.Main" file="HaxeCodeConvert" path="bin" />
+  <source path="src" />
+  <haxelib name="openfl" />
+  <haxelib name="haxeui-core" />
+  <haxelib name="haxeui-openfl" />
+  <window width="1100" height="720" fps="60" background="#1e1e1e"/>
+  <assets path="assets" />
+  <haxedef name="HCC_GUI" />
+</project>
