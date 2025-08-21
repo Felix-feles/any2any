@@ -34,6 +34,7 @@ class Converter {
     if (~/^\s*function /m.match(code) || ~/console\.log/.match(code)) return Language.JavaScript;
     return Language.Auto;
   }
+
   function jsToPython(code:String):String {
     var lines = code.split("\n");
     var out:Array<String> = [];
