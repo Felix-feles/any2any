@@ -13,6 +13,7 @@ class Main extends Sprite {
   var outputArea:TextArea;
   var fromSel:DropDown;
   var toSel:DropDown;
+  var statusLbl:Label;
 
   public function new() {
     super();
@@ -41,11 +42,29 @@ class Main extends Sprite {
     convertBtn.text = "Convert";
     convertBtn.onClick = _ -> convert();
 
+    var swapBtn = new Button();
+    swapBtn.text = "Swap";
+    swapBtn.onClick = _ -> {
+      var tmp = fromSel.selectedIndex;
+      fromSel.selectedIndex = toSel.selectedIndex;
+      toSel.selectedIndex = tmp;
+    };
+
+    var clearBtn = new Button();
+    clearBtn.text = "Clear";
+    clearBtn.onClick = _ -> {
+      inputArea.text = "";
+      outputArea.text = "";
+      statusLbl.text = "";
+    };
+
     top.addComponent(new Label("From:"));
     top.addComponent(fromSel);
     top.addComponent(new Label("To:"));
     top.addComponent(toSel);
     top.addComponent(convertBtn);
+    top.addComponent(swapBtn);
+    top.addComponent(clearBtn);
 
     inputArea = new TextArea();
     inputArea.percentWidth = 100;
@@ -60,6 +79,9 @@ class Main extends Sprite {
     root.addComponent(top);
     root.addComponent(inputArea);
     root.addComponent(outputArea);
+
+    statusLbl = new Label();
+    root.addComponent(statusLbl);
 
     Screen.instance.addComponent(root);
   }
@@ -78,5 +100,6 @@ class Main extends Sprite {
     var conv = new core.Converter(new NullAgent());
     var res = conv.convert(inputArea.text, from, to);
     outputArea.text = res;
+    statusLbl.text = 'Converted from ' + Std.string(from) + ' to ' + Std.string(to);
   }
 }

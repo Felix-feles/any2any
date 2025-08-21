@@ -19,6 +19,8 @@ class Segmenter {
     }
     if (buf.length > 0) chunks.push(buf.toString());
     return chunks;
+  }
+
   public static function split(code:String):Array<{text:String}> {
     return [{ text: code }];
   }

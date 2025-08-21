@@ -11,45 +11,33 @@ class Converter {
     this.agent = agent;
   }
 
+  /**
+   * Convert source code from one language to another.
+   */
   public function convert(code:String, from:Language, to:Language):String {
-    var src = from == Language.Auto ? detectLanguage(code) : from;
+    var src = (from == Language.Auto) ? detectLanguage(code) : from;
     if (src == to) return code;
+
+    Registry.ensureDefaults();
     var parser = Registry.getParser(src);
     var emitter = Registry.getEmitter(to);
     var buf = new StringBuf();
+
     for (chunk in Segmenter.chunk(code)) {
+      var piece:String;
       if (parser != null && emitter != null) {
         var ast = parser.parse(chunk);
-        buf.add(emitter.emit(ast));
+        piece = emitter.emit(ast);
       } else if (src == Language.JavaScript && to == Language.Python) {
-        buf.add(jsToPython(chunk));
+        piece = jsToPython(chunk);
       } else {
-        buf.add(agent.convertChunk(chunk, cast src, cast to));
+        piece = agent.convertChunk(chunk, cast src, cast to);
       }
+      buf.add(piece);
       buf.add("\n");
     }
+
     return buf.toString();
-
-    Registry.initDefaults();
-    var parser = Registry.getParser(src);
-    var emitter = Registry.getEmitter(to);
-    if (parser != null && emitter != null) {
-      try {
-        var segments = Segmenter.split(code);
-        var buf = new StringBuf();
-        for (seg in segments) {
-          var ast = parser.parseSegment(seg.text);
-          buf.add(emitter.emit(ast));
-        }
-        return buf.toString();
-      } catch (e:Dynamic) {}
-    }
-
-    if (src == Language.JavaScript && to == Language.Python) {
-      return jsToPython(code);
-    }
-
-    return agent.convertChunk(code, cast src, cast to);
   }
 
   function detectLanguage(code:String):Language {
