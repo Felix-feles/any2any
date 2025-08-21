@@ -1,73 +1,58 @@
 package parsers;
 
 import core.UniAst;
-import StringTools;
+import parsers.TreeSitter.TsParser;
+import parsers.TreeSitter.TsNode;
+import parsers.TreeSitter.TsLanguage;
+import parsers.ParserError;
 
 class JSParser implements IParser {
-  public function new() {}
+  var parser:TsParser;
+
+  public function new() {
+    parser = new TsParser();
+    parser.setLanguage(TsLanguage);
+  }
 
   public function parse(code:String):UniAstModule {
-    var lines = code.split("\n");
-    var instructions = new Array<UniAstInstruction>();
-    var i = 0;
-    while (i < lines.length) {
-      var line = StringTools.trim(lines[i]);
-      if (line == "" || line == "}") {
-        i++;
-        continue;
-      }
-      var funcRe = ~/^function\s+([a-zA-Z0-9_]+)\(([^)]*)\)\s*{/;
-      if (funcRe.match(line)) {
-        var name = funcRe.matched(1);
-        var params = funcRe.matched(2).split(",").map(StringTools.trim).filter(function(p) return p != "");
-        i++;
-        var bodyLines = [];
-        while (i < lines.length && lines[i].indexOf("}") < 0) {
-          bodyLines.push(lines[i]);
-          i++;
-        }
-        var bodyBlock = { instructions: parseBlock(bodyLines) };
-        instructions.push(FunctionDecl(name, params, bodyBlock));
-        i++; // skip closing brace
-        continue;
-      }
-      instructions.push(parseInstruction(line));
-      i++;
+    var tree = parser.parse(code);
+    if (tree.rootNode.hasError) {
+      throw new ParserError("Parse error");
     }
+    var instructions = [for (child in tree.rootNode.namedChildren) mapStatement(child)];
     return { blocks: [ { instructions: instructions } ] };
   }
 
-  function parseBlock(lines:Array<String>):Array<UniAstInstruction> {
-    var out = new Array<UniAstInstruction>();
-    for (l in lines) {
-      var t = StringTools.trim(l);
-      if (t == "") continue;
-      out.push(parseInstruction(t));
+  function mapStatement(node:TsNode):UniAstInstruction {
+    return switch node.type {
+      case "function_declaration":
+        var name = node.namedChildren[0].text;
+        var paramsNode = node.namedChildren[1];
+        var params = [for (p in paramsNode.namedChildren) p.text];
+        var bodyNode = node.namedChildren[2];
+        var bodyInstr = [for (c in bodyNode.namedChildren) mapStatement(c)];
+        FunctionDecl(name, params, { instructions: bodyInstr });
+      case "expression_statement":
+        Expr(mapExpr(node.namedChildren[0]));
+      case "return_statement":
+        Return(mapExpr(node.namedChildren[0]));
+      default:
+        throw new ParserError("Unsupported node: " + node.type);
     }
-    return out;
   }
 
-  function parseInstruction(line:String):UniAstInstruction {
-    var returnRe = ~/^return\s+(.+)/;
-    if (returnRe.match(line)) {
-      var expr = parseExpr(returnRe.matched(1));
-      return Return(expr);
+  function mapExpr(node:TsNode):UniAstExpr {
+    return switch node.type {
+      case "call_expression":
+        var name = node.namedChildren[0].text;
+        var argsNode = node.namedChildren[1];
+        var args = [for (a in argsNode.namedChildren) mapExpr(a)];
+        CallExpr(name, args);
+      case "string":
+        var t = node.text;
+        StringLiteral(t.substr(1, t.length - 2));
+      default:
+        StringLiteral(node.text);
     }
-    return Expr(parseExpr(line));
-  }
-
-  function parseExpr(text:String):UniAstExpr {
-    text = ~/;\s*$/.replace(StringTools.trim(text), "");
-    var callRe = ~/^([a-zA-Z0-9_\.]+)\((.*)\)$/;
-    if (callRe.match(text)) {
-      var name = callRe.matched(1);
-      var argsText = StringTools.trim(callRe.matched(2));
-      var args = (argsText == "") ? [] : argsText.split(",").map(function(a) return parseExpr(StringTools.trim(a)));
-      return CallExpr(name, args);
-    }
-    if (text.length >= 2 && StringTools.startsWith(text, "\"") && StringTools.endsWith(text, "\"")) {
-      return StringLiteral(text.substr(1, text.length - 2));
-    }
-    return StringLiteral(text);
   }
 }
