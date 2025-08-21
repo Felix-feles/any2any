@@ -1,4 +1,4 @@
-# Haxe CodeConvert — convertisseur de code multi-langages (pivot UniAST)
+# any2any — convertisseur de code multi-langages (pivot UniAST)
 
 > **Objectif** : application en **Haxe** (CLI + GUI) qui convertit du code d'un langage à un autre via un **langage pivot (UniAST)** inspiré des concepts d'AST (Deno/SWC) et complété par des types Haxe. Architecture **extensible** par greffons (parsers/emitters).
 >
@@ -10,7 +10,7 @@
 
 ## Arborescence
 ```
-HaxeCodeConvert/
+any2any/
 ├─ haxelib.json
 ├─ README.md
 ├─ LICENSE
@@ -46,7 +46,7 @@ HaxeCodeConvert/
 ## `haxelib.json`
 ```json
 {
-  "name": "HaxeCodeConvert",
+  "name": "any2any",
   "url": "",
   "license": "MIT",
   "tags": ["code", "convert", "ast", "ai", "haxe"],
@@ -104,8 +104,8 @@ HaxeCodeConvert/
 ## `project.xml` (GUI OpenFL + HaxeUI)
 ```xml
 <project>
-  <meta title="Haxe CodeConvert" package="com.example.codeconvert" version="0.1.0" company="you"/>
-  <app main="gui.Main" file="HaxeCodeConvert" path="bin" />
+  <meta title="any2any" package="com.example.any2any" version="0.1.0" company="you"/>
+  <app main="gui.Main" file="any2any" path="bin" />
   <source path="src" />
   <haxelib name="openfl" />
   <haxelib name="haxeui-core" />
@@ -120,7 +120,7 @@ HaxeCodeConvert/
 
 ## `README.md`
 ```md
-# Haxe CodeConvert
+# any2any
 
 Convertisseur de code multi-langages via un AST pivot (UniAST). Fournit :
 - **CLI** (HashLink / C++ / JS)

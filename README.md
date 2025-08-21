@@ -1,6 +1,6 @@
-# HaxeCodeConvert
+# any2any
 
-HaxeCodeConvert is a progressive code converter written in Haxe. It reads source
+any2any is a progressive code converter written in Haxe. It reads source
 code, maps it to a tiny universal AST (UniAST) and emits code for another
 language. The project ships with a command-line tool and an experimental
 OpenFL/HaxeUI interface.
